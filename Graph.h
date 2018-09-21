@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <queue>
 #include <iostream>
 
 template<typename CustomVertex, typename CustomEdge>
@@ -36,6 +37,37 @@ struct Graph
 		vertices[begin].push_back(baseDirection);
 		baseDirection.reverse = vertices[baseDirection.vertex = begin].size() - 1;
 		vertices[end].push_back(baseDirection);
+	}
+
+	void bfs(int startPoint)
+	{
+		for (auto& it : vertices)
+		{
+			it.level = -1;
+			it.parent = -1;
+		}
+
+		vertices[startPoint].level = 0;
+		std::queue<int> buffor;
+		//int begin = 0;
+		//int end = 0;
+		buffor.push(startPoint);
+
+		while (!buffor.empty())
+		{
+			startPoint = buffor.front();
+			buffor.pop();
+
+			for (auto& it : vertices[startPoint])
+			{
+				if (vertices[it.vertex].level == -1)
+				{
+					vertices[it.vertex].level = vertices[startPoint].level + 1;
+					vertices[it.vertex].parent = startPoint;
+					buffor.push(it.vertex);
+				}
+			}
+		}
 	}
 
 	void write()
