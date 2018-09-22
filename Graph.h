@@ -33,10 +33,11 @@ struct Graph
 	void addUndirectedEdge(int begin, int end, CustomEdge edge = CustomEdge())
 	{
 		Edge baseDirection(edge, end);
-		baseDirection.reverse = vertices[end].size() + (begin == end); //needs analyzis
+		baseDirection.reverse = begin;
 		vertices[begin].push_back(baseDirection);
-		baseDirection.reverse = vertices[baseDirection.vertex = begin].size() - 1;
-		vertices[end].push_back(baseDirection);
+		Edge reverseDirection(edge, begin);
+		reverseDirection.reverse = end;
+		vertices[end].push_back(reverseDirection);
 	}
 
 	void bfs(int startPoint)
@@ -49,8 +50,7 @@ struct Graph
 
 		vertices[startPoint].level = 0;
 		std::queue<int> buffor;
-		//int begin = 0;
-		//int end = 0;
+
 		buffor.push(startPoint);
 
 		while (!buffor.empty())
